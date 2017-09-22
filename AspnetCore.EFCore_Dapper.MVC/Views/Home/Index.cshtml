@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<div class="row">
+    <div class="col-md-12">
+        <h2>Entity Framework Core</h2>
+        <a class="btn btn-default" asp-controller="Autor" asp-action="Index">Autores</a>
+        <a class="btn btn-default" asp-controller="Livro" asp-action="Index">Livros</a>
+    </div>
+    <div class="col-md-12">
+        <h2>Dapper</h2>
+        <a class="btn btn-default" asp-controller="AutorDapper" asp-action="Index">Autores</a>
+        <a class="btn btn-default" asp-controller="LivroDapper" asp-action="Index">Livros</a>
+    </div>
+    <div class="col-md-12">
+        <h2>Híbrido (EF Core + Dapper)</h2>
+        <a class="btn btn-default" asp-controller="AutorHibrido" asp-action="Index">Autores</a>
+        <a class="btn btn-default" asp-controller="LivroHibrido" asp-action="Index">Livros</a>
+    </div>
+</div>

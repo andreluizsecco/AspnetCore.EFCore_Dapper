@@ -1,0 +1,39 @@
+﻿@model AspnetCore.EFCore_Dapper.Domain.Entities.Livro
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete - Dapper</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Livro</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Titulo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Titulo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AnoPublicacao)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AnoPublicacao)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Autor)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Autor.Nome)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="ID" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>
