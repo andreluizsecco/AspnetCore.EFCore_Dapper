@@ -1,8 +1,7 @@
-﻿using System;
-using Microsoft.Extensions.DependencyInjection;
-using AspnetCore.EFCore_Dapper.Domain.Interfaces.Repositories;
+﻿using AspnetCore.EFCore_Dapper.Data.Repositories.Dapper;
 using AspnetCore.EFCore_Dapper.Data.Repositories.EntityFramework;
-using AspnetCore.EFCore_Dapper.Data.Repositories.Dapper;
+using AspnetCore.EFCore_Dapper.Domain.Interfaces.Repositories;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AspnetCore.EFCore_Dapper.IoC
 {

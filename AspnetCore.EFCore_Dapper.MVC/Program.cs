@@ -1,23 +1,17 @@
-﻿using AspnetCore.EFCore_Dapper.Data.Data;
-using Microsoft.AspNetCore;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
 namespace AspnetCore.EFCore_Dapper.MVC
 {
     public class Program
     {
-        public static void Main(string[] args)
-        {
-            BuildWebHost(args).Run();
-        }
+        public static void Main(string[] args) =>
+            CreateWebHostBuilder(args).Build().Run();
 
-        public static IWebHost BuildWebHost(string[] args)
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             var host = WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .Build();
-
-            DbInitializer.Initialize();
+                .UseStartup<Startup>();
             return host;
         }
     }

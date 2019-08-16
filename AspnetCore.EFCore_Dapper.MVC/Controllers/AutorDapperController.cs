@@ -2,6 +2,7 @@
 using AspnetCore.EFCore_Dapper.Domain.Interfaces.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace AspnetCore.EFCore_Dapper.MVC.Controllers
 {
@@ -12,11 +13,9 @@ namespace AspnetCore.EFCore_Dapper.MVC.Controllers
         public AutorDapperController(IAutorDapperRepository autorDapperRepository) =>
             _autorDapperRepository = autorDapperRepository;
 
-        // GET: Autor
         public IActionResult Index() =>
             View(_autorDapperRepository.GetAll());
 
-        // GET: Autor/Details/5
         public IActionResult Details(int? id)
         {
             if (id == null)
@@ -29,13 +28,9 @@ namespace AspnetCore.EFCore_Dapper.MVC.Controllers
             return View(autor);
         }
 
-        // GET: Autor/Create
         public IActionResult Create() =>
             View();
 
-        // POST: Autor/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind("ID,Nome")] Autor autor)
@@ -48,7 +43,6 @@ namespace AspnetCore.EFCore_Dapper.MVC.Controllers
             return View(autor);
         }
 
-        // GET: Autor/Edit/5
         public IActionResult Edit(int? id)
         {
             if (id == null)
@@ -61,9 +55,6 @@ namespace AspnetCore.EFCore_Dapper.MVC.Controllers
             return View(autor);
         }
 
-        // POST: Autor/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, [Bind("ID,Nome")] Autor autor)
@@ -89,7 +80,6 @@ namespace AspnetCore.EFCore_Dapper.MVC.Controllers
             return View(autor);
         }
 
-        // GET: Autor/Delete/5
         public IActionResult Delete(int? id)
         {
             if (id == null)
@@ -102,7 +92,6 @@ namespace AspnetCore.EFCore_Dapper.MVC.Controllers
             return View(autor);
         }
 
-        // POST: Autor/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
@@ -114,5 +103,21 @@ namespace AspnetCore.EFCore_Dapper.MVC.Controllers
 
         private bool AutorExists(int id) =>
             _autorDapperRepository.GetById(id) != null;
+
+        private bool _disposed = false;
+
+        ~AutorDapperController() =>
+            Dispose(false);
+
+        protected override void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                _autorDapperRepository.Dispose();
+                base.Dispose(disposing);
+                _disposed = true;
+            }
+            GC.SuppressFinalize(this);
+        }
     }
 }

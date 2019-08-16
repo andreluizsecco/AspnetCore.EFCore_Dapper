@@ -7,14 +7,12 @@ using System.Linq;
 
 namespace AspnetCore.EFCore_Dapper.Data.Repositories.EntityFramework.Common
 {
-    public class EFRepositoryBase<TEntity> : IDisposable, IRepositoryBase<TEntity> where TEntity : class
+    public abstract class EFRepositoryBase<TEntity> : IRepositoryBase<TEntity> where TEntity : class
     {
         protected readonly AppDbContext db;
 
-        public EFRepositoryBase()
-        {
-            db = new AppDbContext();
-        }
+        public EFRepositoryBase(AppDbContext context) =>
+            db = context;
 
         public virtual void Add(TEntity obj)
         {
@@ -22,15 +20,11 @@ namespace AspnetCore.EFCore_Dapper.Data.Repositories.EntityFramework.Common
             db.SaveChanges();
         }
 
-        public virtual IEnumerable<TEntity> GetAll()
-        {
-            return db.Set<TEntity>().ToList();
-        }
+        public virtual IEnumerable<TEntity> GetAll() =>
+            db.Set<TEntity>().ToList();
 
-        public virtual TEntity GetById(int? id)
-        {
-            return db.Set<TEntity>().Find(id);
-        }
+        public virtual TEntity GetById(int? id) =>
+            db.Set<TEntity>().Find(id);
 
         public virtual void Remove(TEntity obj)
         {
@@ -44,9 +38,18 @@ namespace AspnetCore.EFCore_Dapper.Data.Repositories.EntityFramework.Common
             db.SaveChanges();
         }
 
+        private bool _disposed = false;
+
+        ~EFRepositoryBase() =>
+            Dispose();
+
         public void Dispose()
         {
-            db.Dispose();
+            if (!_disposed)
+            {
+                db.Dispose();
+                _disposed = true;
+            }
             GC.SuppressFinalize(this);
         }
     }

@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using System;
-using System.Collections.Generic;
 
 namespace AspnetCore.EFCore_Dapper.Data.Migrations
 {
@@ -13,7 +11,7 @@ namespace AspnetCore.EFCore_Dapper.Data.Migrations
                 name: "Autor",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false),
+                    ID = table.Column<int>(nullable: false),
                     Nome = table.Column<string>(type: "varchar(100)", nullable: false)
                 },
                 constraints: table =>
@@ -25,11 +23,11 @@ namespace AspnetCore.EFCore_Dapper.Data.Migrations
                 name: "Livro",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
+                    ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    AutorID = table.Column<int>(type: "int", nullable: false),
+                    AutorID = table.Column<int>(nullable: false),
                     Titulo = table.Column<string>(type: "varchar(100)", nullable: false),
-                    AnoPublicacao = table.Column<int>(type: "int", nullable: false)
+                    AnoPublicacao = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -40,6 +38,31 @@ namespace AspnetCore.EFCore_Dapper.Data.Migrations
                         principalTable: "Autor",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Autor",
+                columns: new[] { "ID", "Nome" },
+                values: new object[,]
+                {
+                    { 1, "Eric Evans" },
+                    { 2, "Robert C. Martin" },
+                    { 3, "Vaughn Vernon" },
+                    { 4, "Scott Millet" },
+                    { 5, "Martin Fowler" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Livro",
+                columns: new[] { "ID", "AnoPublicacao", "AutorID", "Titulo" },
+                values: new object[,]
+                {
+                    { 1, 2003, 1, "Domain-Driven Design: Tackling Complexity in the Heart of Software" },
+                    { 2, 2006, 2, "Agile Principles, Patterns, and Practices in C#" },
+                    { 3, 2008, 2, "Clean Code: A Handbook of Agile Software Craftsmanship" },
+                    { 4, 2013, 3, "Implementing Domain-Driven Design" },
+                    { 5, 2015, 4, "Patterns, Principles, and Practices of Domain-Driven Design" },
+                    { 6, 2012, 5, "Refactoring: Improving the Design of Existing Code " }
                 });
 
             migrationBuilder.CreateIndex(

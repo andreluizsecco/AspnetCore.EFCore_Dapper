@@ -7,16 +7,17 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.IO;
 
 namespace AspnetCore.EFCore_Dapper.Data.Repositories.Dapper.Common
 {
-    public class DapperRepositoryBase<TEntity> : IDisposable, IRepositoryBase<TEntity> where TEntity : class
+    public abstract class DapperRepositoryBase<TEntity> : IRepositoryBase<TEntity> where TEntity : class
     {
+        private readonly IConfiguration _configuration;
         protected readonly SqlConnection conn;
 
-        public DapperRepositoryBase()
+        public DapperRepositoryBase(IConfiguration configuration)
         {
+            _configuration = configuration;
             if (FluentMapper.EntityMaps.IsEmpty)
             {
                 FluentMapper.Initialize(c =>
@@ -26,44 +27,37 @@ namespace AspnetCore.EFCore_Dapper.Data.Repositories.Dapper.Common
                     c.ForDommel();
                 });
             }
-
-            var config =  new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json")
-                .Build();
-            
-            conn = new SqlConnection(config.GetConnectionString("DefaultConnection"));
+            conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
         }
 
-        public void Add(TEntity obj)
-        {
+        public void Add(TEntity obj) =>
             conn.Insert(obj);
-        }        
 
-        public virtual IEnumerable<TEntity> GetAll()
-        {
-            return conn.GetAll<TEntity>();
-        }
+        public virtual IEnumerable<TEntity> GetAll() =>
+            conn.GetAll<TEntity>();
 
-        public virtual TEntity GetById(int? id)
-        {
-            return conn.Get<TEntity>(id);
-        }
+        public virtual TEntity GetById(int? id) =>
+            conn.Get<TEntity>(id);
 
-        public virtual void Remove(TEntity obj)
-        {
+        public virtual void Remove(TEntity obj) =>
             conn.Delete(obj);
-        }
 
-        public virtual void Update(TEntity obj)
-        {
+        public virtual void Update(TEntity obj) =>
             conn.Update(obj);
-        }
+
+        private bool _disposed = false;
+
+        ~DapperRepositoryBase() =>
+            Dispose();
 
         public void Dispose()
         {
-            conn.Close();
-            conn.Dispose();
+            if (!_disposed)
+            {
+                conn.Close();
+                conn.Dispose();
+                _disposed = true;
+            }
             GC.SuppressFinalize(this);
         }
     }

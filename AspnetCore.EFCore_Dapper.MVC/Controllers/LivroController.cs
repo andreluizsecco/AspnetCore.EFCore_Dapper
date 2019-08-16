@@ -3,6 +3,7 @@ using AspnetCore.EFCore_Dapper.Domain.Interfaces.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace AspnetCore.EFCore_Dapper.MVC.Controllers
 {
@@ -18,11 +19,9 @@ namespace AspnetCore.EFCore_Dapper.MVC.Controllers
             _autorEFRepository = autorEFRepository;
         }
 
-        // GET: Livro
         public IActionResult Index() =>
             View(_livroEFRepository.GetAll());
 
-        // GET: Livro/Details/5
         public IActionResult Details(int? id)
         {
             if (id == null)
@@ -35,16 +34,12 @@ namespace AspnetCore.EFCore_Dapper.MVC.Controllers
             return View(livro);
         }
 
-        // GET: Livro/Create
         public IActionResult Create()
         {
             ViewData["AutorID"] = new SelectList(_autorEFRepository.GetAll(), "ID", "Nome");
             return View();
         }
 
-        // POST: Livro/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind("ID,AutorID,Titulo,AnoPublicacao")] Livro livro)
@@ -58,7 +53,6 @@ namespace AspnetCore.EFCore_Dapper.MVC.Controllers
             return View(livro);
         }
 
-        // GET: Livro/Edit/5
         public IActionResult Edit(int? id)
         {
             if (id == null)
@@ -72,9 +66,6 @@ namespace AspnetCore.EFCore_Dapper.MVC.Controllers
             return View(livro);
         }
 
-        // POST: Livro/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, [Bind("ID,AutorID,Titulo,AnoPublicacao")] Livro livro)
@@ -101,7 +92,6 @@ namespace AspnetCore.EFCore_Dapper.MVC.Controllers
             return View(livro);
         }
 
-        // GET: Livro/Delete/5
         public IActionResult Delete(int? id)
         {
             if (id == null)
@@ -114,7 +104,6 @@ namespace AspnetCore.EFCore_Dapper.MVC.Controllers
             return View(livro);
         }
 
-        // POST: Livro/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
@@ -126,5 +115,22 @@ namespace AspnetCore.EFCore_Dapper.MVC.Controllers
 
         private bool LivroExists(int id) =>
             _autorEFRepository.GetById(id) != null;
+
+        private bool _disposed = false;
+
+        ~LivroController() =>
+            Dispose(false);
+
+        protected override void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                _autorEFRepository.Dispose();
+                _livroEFRepository.Dispose();
+                base.Dispose(disposing);
+                _disposed = true;
+            }
+            GC.SuppressFinalize(this);
+        }
     }
 }

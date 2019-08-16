@@ -12,9 +12,8 @@ Projeto ASP.NET Core + Entity Framework Core + Dapper, demonstrando o uso de amb
 ### AspnetCore.EFCore_Dapper.Data
 
 * Entity Framework Context com aplicação dos mapeamentos das entidades e configurações para o uso de Migrations;
-* DbInitializer para a criação de dados de exemplo na inicialização do projeto;
 * Mapeamentos das entidades (Configuração do tipo e tamanho das colunas, chaves primárias, relacionamentos, etc) tanto do EF Core, quanto do Dapper;
-* Repositórios EF Core e Dapper para a manipulação de dados do banco de dados.
+* Repository Pattern: Repositórios EF Core e Dapper para a manipulação de dados do banco de dados.
 
 ### AspnetCore.EFCore_Dapper.IoC
 
